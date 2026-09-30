@@ -14,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        Paginator::useBootstrapFive();
+        // Pakai tampilan pagination buatan sendiri (resources/views/pagination/custom.blade.php)
+        Paginator::defaultView('pagination.custom');
     }
 }

@@ -1,0 +1,294 @@
+/* ==========================================================
+   1. PENGATURAN WARNA & BENTUK  (TEMA GELAP)
+   ----------------------------------------------------------
+   Ini bagian yang paling sering Anda ubah.
+   Ganti kode warna (#xxxxxx) di sini, seluruh tampilan ikut berubah.
+   ========================================================== */
+:root {
+  color-scheme: dark;      /* membuat kalender, dropdown, & scrollbar bawaan browser ikut gelap */
+
+  /* --- Warna dasar halaman --- */
+  --latar: #0f1219;        /* warna background halaman (paling gelap) */
+  --kartu: #171b26;        /* warna kotak/kartu/tabel */
+  --kartu-2: #1c2130;      /* warna sedikit lebih terang (judul kolom tabel, baris saat disentuh mouse) */
+  --garis: #272d3d;        /* warna garis pemisah & border */
+  --teks: #e4e7ef;         /* warna teks utama */
+  --teks-redup: #8b93a7;   /* warna teks pendukung (keterangan) */
+  --isian: #121620;        /* warna latar kolom isian (input) */
+
+  /* --- Warna utama (tombol Simpan/Masuk/Tambah, menu aktif, fokus input) --- */
+  --utama: #6f86e8;        /* warna tombol utama */
+  --utama-hover: #8196ee;  /* warna tombol utama saat disentuh mouse */
+  --utama-soft: rgba(111, 134, 232, .16);  /* versi transparan (latar menu aktif, cahaya input) */
+  --utama-teks: #9fb1f5;   /* teks berwarna utama (judul, angka) */
+
+  /* --- Warna tombol lembut (latar transparan + teks berwarna) --- */
+  /* "hover" = warna latar saat tombol disentuh mouse */
+  --hijau-soft: rgba(74, 190, 130, .14);   --hijau-teks: #6fd6a0;   --hijau-hover: rgba(74, 190, 130, .26);   /* tombol Cari, notifikasi sukses */
+  --merah-soft: rgba(232, 100, 100, .14);  --merah-teks: #f08a8a;   --merah-hover: rgba(232, 100, 100, .26);  /* tombol Hapus, notifikasi error */
+  --kuning-soft: rgba(240, 180, 70, .14);  --kuning-teks: #f0c36a;  --kuning-hover: rgba(240, 180, 70, .26);  /* tombol Ubah */
+  --biru-soft: rgba(80, 180, 220, .14);    --biru-teks: #74cbe6;    --biru-hover: rgba(80, 180, 220, .26);    /* tombol Detail */
+
+  /* --- Bentuk --- */
+  --radius: 12px;          /* kelengkungan kartu (0 = kotak, 20px = sangat bulat) */
+  --radius-kecil: 8px;     /* kelengkungan tombol & kolom isian */
+  --lebar-halaman: 1000px; /* lebar maksimal isi halaman */
+}
+
+/* ==========================================================
+   2. DASAR HALAMAN
+   Font, warna teks, dan reset margin bawaan browser.
+   ========================================================== */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--latar);
+  color: var(--teks);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; /* jenis huruf */
+  font-size: 15px;                                                        /* ukuran huruf */
+  line-height: 1.5;
+}
+
+a { color: var(--utama-teks); text-decoration: none; }
+h3 { font-size: 1.35rem; font-weight: 600; margin: 0 0 1rem; letter-spacing: .01em; }
+.redup { color: var(--teks-redup); }
+
+/* Pembungkus isi halaman (agar isi berada di tengah) */
+.wadah {
+  max-width: var(--lebar-halaman);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Baris judul + tombol di sebelah kanan (contoh: "Data Peserta" + "Tambah") */
+.baris-judul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.baris-judul h3 { margin: 0; }
+
+/* ==========================================================
+   3. NAVBAR (MENU ATAS)
+   ========================================================== */
+.topbar {
+  background: var(--kartu);
+  border-bottom: 1px solid var(--garis);
+  padding: .7rem 0;
+  margin-bottom: 1.5rem;
+}
+.topbar .wadah {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;                 /* menu turun ke bawah di layar kecil */
+}
+.topbar .merek {                   /* tulisan "Data Peserta" di kiri */
+  font-weight: 600;
+  color: var(--utama-teks);
+  margin-right: 1rem;
+}
+.topbar .menu { display: flex; gap: .25rem; flex: 1; }
+.topbar .menu a {                  /* tiap link menu */
+  color: var(--teks-redup);
+  padding: .4rem .9rem;
+  border-radius: var(--radius-kecil);
+}
+.topbar .menu a:hover { background: var(--kartu-2); color: var(--teks); }
+.topbar .menu a.aktif {            /* menu halaman yang sedang dibuka */
+  background: var(--utama-soft);
+  color: var(--utama-teks);
+  font-weight: 500;
+}
+.topbar .sapaan { color: var(--teks-redup); font-size: .9rem; }  /* nama admin */
+
+/* ==========================================================
+   4. KARTU (KOTAK)
+   ========================================================== */
+.kartu {
+  background: var(--kartu);
+  border: 1px solid var(--garis);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, .25);   /* bayangan halus (hapus baris ini jika ingin datar) */
+  overflow: hidden;
+}
+.kartu-isi { padding: 1.3rem 1.4rem; }              /* jarak dalam kartu */
+.kartu-judul {                                       /* judul kecil di atas kartu */
+  padding: .9rem 1.2rem;
+  border-bottom: 1px solid var(--garis);
+  font-weight: 600;
+}
+
+/* ==========================================================
+   5. KARTU STATISTIK (DASHBOARD)
+   ========================================================== */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));  /* otomatis 2 kolom / 1 kolom di HP */
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.stat .label { color: var(--teks-redup); font-size: .9rem; }
+.stat .angka { font-size: 2.2rem; font-weight: 700; line-height: 1.2; margin: 0; }
+.stat.biru .angka  { color: var(--utama-teks); }   /* warna angka kartu pertama */
+.stat.hijau .angka { color: var(--hijau-teks); }   /* warna angka kartu kedua */
+
+/* ==========================================================
+   6. TABEL
+   ========================================================== */
+.tabel-wrap { overflow-x: auto; }                    /* tabel bisa digeser di layar kecil */
+.tabel { width: 100%; border-collapse: collapse; }
+.tabel th {                                          /* baris judul kolom */
+  background: var(--kartu-2);
+  color: var(--teks-redup);
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  text-align: left;
+  padding: .8rem 1rem;
+  border-bottom: 1px solid var(--garis);
+}
+.tabel td {                                          /* isi tabel */
+  padding: .8rem 1rem;
+  border-bottom: 1px solid var(--garis);
+  vertical-align: middle;
+}
+.tabel tbody tr:last-child td { border-bottom: none; }
+.tabel tbody tr:hover { background: var(--kartu-2); }   /* baris disorot saat disentuh mouse */
+.tabel .tengah { text-align: center; }
+.tabel .aksi { white-space: nowrap; }                /* tombol aksi tidak turun baris */
+
+/* Tabel rincian (halaman Detail Peserta): kiri label, kanan isi */
+.tabel-detail { width: 100%; border-collapse: collapse; }
+.tabel-detail th {
+  width: 200px;
+  text-align: left;
+  color: var(--teks-redup);
+  font-weight: 500;
+  padding: .7rem 0;
+  vertical-align: top;
+}
+.tabel-detail td { padding: .7rem 0; }
+.tabel-detail tr { border-bottom: 1px solid var(--garis); }
+.tabel-detail tr:last-child { border-bottom: none; }
+
+/* ==========================================================
+   7. TOMBOL
+   Cara pakai di HTML: class="btn btn-utama"
+   ========================================================== */
+.btn {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: var(--radius-kecil);
+  padding: .5rem 1rem;
+  font-size: .92rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: center;
+  transition: background .15s;                       /* perpindahan warna halus saat disentuh mouse */
+}
+.btn-kecil { padding: .3rem .7rem; font-size: .82rem; }   /* tombol ukuran kecil (Ubah/Hapus/Detail) */
+.btn-penuh { display: block; width: 100%; }               /* tombol selebar kotak (tombol Masuk) */
+
+.btn-utama { background: var(--utama); color: #fff; }             /* Simpan, Masuk, Tambah */
+.btn-utama:hover { background: var(--utama-hover); }
+
+.btn-abu { background: transparent; color: var(--teks); border-color: var(--garis); }  /* Batal, Kembali, Reset, Keluar */
+.btn-abu:hover { background: var(--kartu-2); }
+
+.btn-cari { background: var(--hijau-soft); color: var(--hijau-teks); }      /* Cari */
+.btn-cari:hover { background: var(--hijau-hover); }
+
+.btn-ubah { background: var(--kuning-soft); color: var(--kuning-teks); }    /* Ubah */
+.btn-ubah:hover { background: var(--kuning-hover); }
+
+.btn-hapus { background: var(--merah-soft); color: var(--merah-teks); }     /* Hapus */
+.btn-hapus:hover { background: var(--merah-hover); }
+
+.btn-detail { background: var(--biru-soft); color: var(--biru-teks); }      /* Detail */
+.btn-detail:hover { background: var(--biru-hover); }
+
+/* ==========================================================
+   8. FORM (KOLOM ISIAN)
+   ========================================================== */
+.form-grup { margin-bottom: 1rem; }                  /* jarak antar kolom isian */
+.form-grup label {
+  display: block;
+  font-weight: 500;
+  font-size: .9rem;
+  margin-bottom: .35rem;
+}
+.input {                                             /* input, select, dan textarea */
+  width: 100%;
+  border: 1px solid var(--garis);
+  border-radius: var(--radius-kecil);
+  padding: .55rem .8rem;
+  font-size: .95rem;
+  font-family: inherit;
+  color: var(--teks);
+  background: var(--isian);
+}
+.input::placeholder { color: var(--teks-redup); opacity: .7; }   /* tulisan petunjuk di kolom kosong */
+.input:focus {                                       /* saat kolom diklik */
+  outline: none;
+  border-color: var(--utama);
+  box-shadow: 0 0 0 3px var(--utama-soft);
+}
+.input.salah { border-color: var(--merah-teks); }    /* kolom yang isinya tidak valid */
+.teks-salah {                                        /* pesan error di bawah kolom */
+  color: var(--merah-teks);
+  font-size: .85rem;
+  margin-top: .3rem;
+}
+
+/* Form pencarian (kolom cari + tombol berjajar) */
+.form-cari {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.form-cari .input { flex: 1; min-width: 200px; max-width: 460px; }
+
+/* Form kecil di dalam tabel (tombol Hapus) agar sejajar dengan tombol lain */
+.form-inline { display: inline; }
+
+/* ==========================================================
+   9. NOTIFIKASI (PESAN SUKSES / ERROR)
+   ========================================================== */
+.alert {
+  padding: .8rem 1rem;
+  border-radius: var(--radius-kecil);
+  border: 1px solid;
+  margin-bottom: 1rem;
+}
+.alert-sukses { background: var(--hijau-soft); color: var(--hijau-teks); border-color: rgba(74, 190, 130, .35); }
+.alert-error  { background: var(--merah-soft); color: var(--merah-teks); border-color: rgba(232, 100, 100, .35); }
+
+/* ==========================================================
+   10. PAGINATION (NOMOR HALAMAN)
+   ========================================================== */
+.paginasi { display: flex; gap: .3rem; margin-top: 1rem; flex-wrap: wrap; }
+.paginasi .halaman {
+  min-width: 36px;
+  text-align: center;
+  padding: .4rem .7rem;
+  border: 1px solid var(--garis);
+  border-radius: var(--radius-kecil);
+  background: var(--kartu);
+  color: var(--teks);
+}
+.paginasi a.halaman:hover { background: var(--utama-soft); }
+.paginasi .aktif { background: var(--utama); border-color: var(--utama); color: #fff; }   /* halaman aktif */
+.paginasi .nonaktif { color: var(--teks-redup); background: var(--latar); }
+
+/* ==========================================================
+   11. HALAMAN LOGIN
+   ========================================================== */
+.login-wrap { max-width: 400px; margin: 12vh auto 0; padding: 0 1rem; }   /* 12vh = jarak dari atas */
+.login-wrap h4 { text-align: center; margin: 0 0 .3rem; font-size: 1.25rem; }
+.login-wrap .sub { text-align: center; margin: 0 0 1.5rem; }

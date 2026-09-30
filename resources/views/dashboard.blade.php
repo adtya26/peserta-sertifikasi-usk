@@ -2,29 +2,30 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<h3 class="mb-3">Dashboard</h3>
-<div class="row g-3 mb-4">
-  <div class="col-md-6">
-    <div class="card text-bg-primary"><div class="card-body">
-      <div>Total Peserta</div><h2>{{ $totalPeserta }}</h2>
-    </div></div>
+<h3>Dashboard</h3>
+
+<div class="stat-grid">
+  <div class="kartu kartu-isi stat biru">
+    <div class="label">Total Peserta</div>
+    <p class="angka">{{ $totalPeserta }}</p>
   </div>
-  <div class="col-md-6">
-    <div class="card text-bg-success"><div class="card-body">
-      <div>Total Skema Sertifikasi</div><h2>{{ $totalSkema }}</h2>
-    </div></div>
+  <div class="kartu kartu-isi stat hijau">
+    <div class="label">Total Skema Sertifikasi</div>
+    <p class="angka">{{ $totalSkema }}</p>
   </div>
 </div>
 
-<div class="card">
-  <div class="card-header">Jumlah Peserta per Skema</div>
-  <table class="table mb-0">
-    <thead><tr><th>Skema</th><th>Jumlah Peserta</th></tr></thead>
-    <tbody>
-      @foreach ($perSkema as $s)
-        <tr><td>{{ $s->nama_skema }}</td><td>{{ $s->pesertas_count }}</td></tr>
-      @endforeach
-    </tbody>
-  </table>
+<div class="kartu">
+  <div class="kartu-judul">Jumlah Peserta per Skema</div>
+  <div class="tabel-wrap">
+    <table class="tabel">
+      <thead><tr><th>Skema</th><th>Jumlah Peserta</th></tr></thead>
+      <tbody>
+        @foreach ($perSkema as $s)
+          <tr><td>{{ $s->nama_skema }}</td><td>{{ $s->pesertas_count }}</td></tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
 </div>
 @endsection
